@@ -9,10 +9,13 @@ import { company } from "../data/company";
 import { Configurator } from "../features/Configurator";
 import { ProjectRing } from "../features/ProjectRing";
 import { StoryScroll } from "../features/StoryScroll";
+import type { CssVars } from "../lib/css";
 import { usePageTitle } from "../lib/hooks";
 import { buildWhatsAppUrl, genericGreeting } from "../lib/whatsapp";
 
 const Hero3D = lazy(() => import("../three/Hero3D").then((module) => ({ default: module.Hero3D })));
+
+const delay = (seconds: number): CssVars => ({ "--d": `${seconds}s` });
 
 const Hero = () => (
   <section className="relative isolate h-svh min-h-[40rem] overflow-hidden text-white [--btn-ink:#fff]">
@@ -29,12 +32,14 @@ const Hero = () => (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
 
     <div className="pointer-events-none relative z-10 mx-auto flex h-full max-w-[90rem] flex-col justify-end px-5 pb-20 sm:justify-center sm:px-10 sm:pb-0">
-      <p className="eyebrow !text-white/70">Móveis sob medida · estúdio 3D</p>
-      <h1 className="display-xl mt-6 max-w-[11ch] sm:max-w-[10ch]">Abra as portas do seu futuro móvel.</h1>
-      <p className="mt-6 max-w-md text-base font-light leading-relaxed text-white/75 sm:text-lg">
+      <p className="eyebrow hero-rise !text-white/70" style={delay(0.15)}>
+        Móveis sob medida · estúdio 3D
+      </p>
+      <h1 className="display-xl hero-rise mt-6 max-w-[11ch] sm:max-w-[10ch]" style={delay(0.3)}>Abra as portas do seu futuro móvel.</h1>
+      <p className="hero-rise mt-6 max-w-md text-base font-light leading-relaxed text-white/75 sm:text-lg" style={delay(0.5)}>
         Mexa em tudo: portas, gavetas, acabamento, LED. Depois peça o seu, feito sob medida.
       </p>
-      <div className="pointer-events-auto mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
+      <div className="pointer-events-auto hero-rise mt-9 flex flex-wrap items-center gap-x-8 gap-y-5" style={delay(0.65)}>
         <Magnetic>
           <Link to="/montar" className="btn btn-primary min-h-14 px-8 !text-xs">
             Monte o seu em 3D <Icon name="arrow" className="size-4" />
@@ -46,7 +51,7 @@ const Hero = () => (
       </div>
     </div>
 
-    <div className="pointer-events-none absolute bottom-8 right-5 z-10 hidden items-center gap-3 rounded-full border border-white/15 bg-black/40 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] backdrop-blur sm:flex sm:right-28">
+    <div className="pointer-events-none absolute bottom-8 right-5 z-10 hidden items-center gap-3 rounded-full border border-white/15 bg-black/60 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] sm:flex sm:right-28">
       <span className="hint-dot" /> Clique nos armários
     </div>
   </section>

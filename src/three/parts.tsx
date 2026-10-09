@@ -74,12 +74,12 @@ export const Carcass = ({ size, position, modules = 1, shelves = 0, endMaterial,
   return (
     <group position={position}>
       <Slab size={[w, h, 0.01]} position={[0, 0, -d / 2 + 0.005]} material={interior} shadow={false} />
-      <Slab size={[w, PANEL, d]} position={[0, h / 2 - PANEL / 2, 0]} material={interior} />
-      <Slab size={[w, PANEL, d]} position={[0, -h / 2 + PANEL / 2, 0]} material={interior} />
+      <Slab size={[w, PANEL, d]} position={[0, h / 2 - PANEL / 2, 0]} material={interior} shadow={false} />
+      <Slab size={[w, PANEL, d]} position={[0, -h / 2 + PANEL / 2, 0]} material={interior} shadow={false} />
       <Slab size={[PANEL, h, d]} position={[-w / 2 + PANEL / 2, 0, 0]} material={endMaterial} />
       <Slab size={[PANEL, h, d]} position={[w / 2 - PANEL / 2, 0, 0]} material={endMaterial} />
       {Array.from({ length: modules - 1 }, (_, index) => (
-        <Slab key={`div-${index}`} size={[PANEL, h - 2 * PANEL, d - 0.01]} position={[-w / 2 + moduleW * (index + 1), 0, 0]} material={interior} />
+        <Slab key={`div-${index}`} size={[PANEL, h - 2 * PANEL, d - 0.01]} position={[-w / 2 + moduleW * (index + 1), 0, 0]} material={interior} shadow={false} />
       ))}
       {Array.from({ length: modules * shelves }, (_, index) => {
         const module = Math.floor(index / shelves);
@@ -90,6 +90,7 @@ export const Carcass = ({ size, position, modules = 1, shelves = 0, endMaterial,
             size={[moduleW - PANEL, PANEL, d - 0.03]}
             position={[-w / 2 + moduleW * (module + 0.5), -h / 2 + (h * level) / (shelves + 1), 0.005]}
             material={interior}
+            shadow={false}
           />
         );
       })}

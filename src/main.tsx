@@ -2,7 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { App } from "./app/App";
+import { watchForNewVersion } from "./lib/versionCheck";
 import "./styles/index.css";
+
+watchForNewVersion();
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Elemento #root não encontrado");

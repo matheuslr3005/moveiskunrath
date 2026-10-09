@@ -4,7 +4,7 @@ import { Icon } from "../components/Icon";
 import { ProjectCover } from "../components/ProjectCover";
 import { categoryById } from "../data/categories";
 import { projects } from "../data/projects";
-import { usePrefersReducedMotion } from "../lib/hooks";
+import { useInView, usePrefersReducedMotion } from "../lib/hooks";
 
 const norm = (angle: number): number => ((((angle + 180) % 360) + 360) % 360) - 180;
 
@@ -15,6 +15,7 @@ export const ProjectRing = () => {
   const count = projects.length;
   const step = 360 / count;
   const host = useRef<HTMLDivElement>(null);
+  const inView = useInView(host, "200px");
   const ring = useRef<HTMLDivElement>(null);
   const items = useRef<Array<HTMLDivElement | null>>([]);
   const angle = useRef(0);
@@ -37,6 +38,7 @@ export const ProjectRing = () => {
   }, []);
 
   useEffect(() => {
+    if (!inView) return;
     let frame = 0;
     const loop = () => {
       const state = drag.current;
@@ -65,7 +67,7 @@ export const ProjectRing = () => {
     };
     frame = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(frame);
-  }, [radius, step, count, reducedMotion]);
+  }, [radius, step, count, reducedMotion, inView]);
 
   const rotateTo = useCallback(
     (index: number) => {
@@ -107,7 +109,7 @@ export const ProjectRing = () => {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        <div ref={ring} className="absolute left-1/2 top-12 h-0 w-0" style={{ transformStyle: "preserve-3d" }}>
+        <div ref={ring} className="absolute left-1/2 top-12 h-0 w-0 will-change-transform" style={{ transformStyle: "preserve-3d" }}>
           {projects.map((project, index) => (
             <div
               key={project.slug}
@@ -119,7 +121,6 @@ export const ProjectRing = () => {
                 width: cardWidth,
                 left: -cardWidth / 2,
                 transform: `rotateY(${index * step}deg) translateZ(${radius}px)`,
-                WebkitBoxReflect: "below 10px linear-gradient(transparent 62%, rgb(255 255 255 / 0.16))",
               }}
             >
               <Link

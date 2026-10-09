@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 
-/** Um facho de luz quente segue o mouse por todo o site (só com mouse, nunca no toque). */
+/**
+ * Facho de luz quente que segue o mouse (só com mouse, nunca no toque).
+ * É um elemento pequeno movido por transform, que roda na GPU: nada de repintar a tela inteira.
+ */
 export const CursorLight = () => {
   const node = useRef<HTMLDivElement>(null);
 
@@ -10,9 +13,10 @@ export const CursorLight = () => {
     const onMove = (event: PointerEvent) => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        node.current?.style.setProperty("--x", `${event.clientX}px`);
-        node.current?.style.setProperty("--y", `${event.clientY}px`);
-        node.current?.style.setProperty("opacity", "1");
+        const light = node.current;
+        if (!light) return;
+        light.style.transform = `translate3d(${event.clientX - 320}px, ${event.clientY - 320}px, 0)`;
+        light.style.opacity = "1";
       });
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -26,11 +30,8 @@ export const CursorLight = () => {
     <div
       ref={node}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-20 opacity-0 transition-opacity duration-700"
-      style={{
-        background: "radial-gradient(520px circle at var(--x, 50%) var(--y, 50%), rgb(247 205 72 / 0.075), transparent 62%)",
-        mixBlendMode: "screen",
-      }}
+      className="pointer-events-none fixed left-0 top-0 z-20 size-[640px] opacity-0 transition-opacity duration-700 will-change-transform"
+      style={{ background: "radial-gradient(closest-side, rgb(247 205 72 / 0.075), transparent)" }}
     />
   );
 };

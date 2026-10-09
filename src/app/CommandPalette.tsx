@@ -75,7 +75,7 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-start justify-center bg-black/60 px-4 pt-[12vh] backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-start justify-center bg-black/70 px-4 pt-[12vh]"
       onMouseDown={onClose}
     >
       <div
@@ -101,7 +101,7 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
           />
           <kbd className="rounded border border-line px-1.5 text-xs text-muted">Esc</kbd>
         </div>
-        <ul className="max-h-[50vh] overflow-y-auto p-2">
+        <ul data-lenis-prevent className="max-h-[50vh] overflow-y-auto p-2">
           {results.length === 0 && <li className="px-3 py-6 text-center text-sm text-muted">Nada encontrado.</li>}
           {results.map((entry, index) => (
             <li key={entry.id}>

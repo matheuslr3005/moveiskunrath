@@ -1,20 +1,38 @@
 import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
-import { Bloom, EffectComposer, ToneMapping, Vignette } from "@react-three/postprocessing";
+import { useFrame } from "@react-three/fiber";
+import { Bloom, EffectComposer, SMAA, ToneMapping, Vignette } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
+import { useRef } from "react";
 import { sharedMaterials } from "./materials";
+
+/** O mapa de sombra é redesenhado só 1 a cada 3 quadros: visualmente igual, bem mais leve. */
+const ShadowThrottle = () => {
+  const frame = useRef(0);
+
+  useFrame(({ gl }) => {
+    frame.current += 1;
+    gl.shadowMap.autoUpdate = false;
+    gl.shadowMap.needsUpdate = frame.current % 3 === 1;
+  });
+
+  return null;
+};
 
 type StageProps = {
   /** Profundidade (z) da parede dos fundos. */
   wallZ?: number;
   wall?: boolean;
   shadowSize?: number;
+  /** Muda quando o móvel muda de forma: refaz a sombra de contato (que fica "congelada" por economia). */
+  shadowKey?: string;
 };
 
 /** Piso escuro, parede quente, luzes de estúdio e sombra de contato. */
-export const Stage = ({ wallZ = -0.3, wall = true, shadowSize = 14 }: StageProps) => (
+export const Stage = ({ wallZ = -0.3, wall = true, shadowSize = 14, shadowKey = "static" }: StageProps) => (
   <>
     <color attach="background" args={["#100d0b"]} />
     <fog attach="fog" args={["#100d0b", 9, 24]} />
+    <ShadowThrottle />
 
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 2]} material={sharedMaterials.floor} receiveShadow>
       <circleGeometry args={[11, 64]} />
@@ -24,7 +42,16 @@ export const Stage = ({ wallZ = -0.3, wall = true, shadowSize = 14 }: StageProps
         <planeGeometry args={[18, 6]} />
       </mesh>
     )}
-    <ContactShadows position={[0, 0.002, 0.8]} opacity={0.65} scale={shadowSize} blur={2.6} far={3.2} resolution={512} />
+    <ContactShadows
+      key={shadowKey}
+      frames={90}
+      position={[0, 0.002, 0.8]}
+      opacity={0.65}
+      scale={shadowSize}
+      blur={2.6}
+      far={3.2}
+      resolution={512}
+    />
 
     <ambientLight intensity={0.42} color="#ffe9cf" />
     <directionalLight
@@ -50,11 +77,19 @@ export const Stage = ({ wallZ = -0.3, wall = true, shadowSize = 14 }: StageProps
   </>
 );
 
-/** Brilho do LED (bloom), tom de cinema e vinheta. */
-export const Effects = () => (
-  <EffectComposer multisampling={4}>
-    <Bloom intensity={0.95} luminanceThreshold={0.9} luminanceSmoothing={0.25} mipmapBlur />
-    <Vignette offset={0.25} darkness={0.75} />
-    <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-  </EffectComposer>
-);
+/** Bloom do LED, tom de cinema e vinheta. O bloom é a parte mais cara: some em aparelhos fracos. */
+export const Effects = ({ bloom }: { bloom: boolean }) =>
+  bloom ? (
+    <EffectComposer multisampling={0}>
+      <Bloom intensity={0.95} luminanceThreshold={0.9} luminanceSmoothing={0.25} mipmapBlur />
+      <Vignette offset={0.25} darkness={0.75} />
+      <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      <SMAA />
+    </EffectComposer>
+  ) : (
+    <EffectComposer multisampling={0}>
+      <Vignette offset={0.25} darkness={0.75} />
+      <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      <SMAA />
+    </EffectComposer>
+  );

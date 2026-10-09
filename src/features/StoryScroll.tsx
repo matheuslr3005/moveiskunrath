@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { HeroScene } from "../components/HeroScene";
 import { cn } from "../lib/cn";
+import { scrollToY } from "../lib/smoothScroll";
 import { findFinish } from "../three/finishData";
 import { finishIndexAt, STEP_COUNT, storyFinishes } from "../three/story";
 
@@ -48,7 +49,7 @@ export const StoryScroll = () => {
     const node = outer.current;
     if (!node) return;
     const total = node.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: node.offsetTop + ((index + 0.5) / STEP_COUNT) * total, behavior: "smooth" });
+    scrollToY(node.offsetTop + ((index + 0.5) / STEP_COUNT) * total);
   };
 
   const chapter = chapters[hud.step] ?? chapters[0]!;

@@ -14,10 +14,21 @@ Experiência 3D e interativa: o site é um "showroom". Tudo que é 3D é gerado 
 - **Do sonho ao móvel:** animação 3D guiada pelo scroll (rascunho, medição, projeto, acabamentos,
   montagem, instalação).
 - **Galeria 3D:** carrossel em anel (arraste, inércia, setas) e cartões que inclinam com o mouse.
+- **Entrada:** na home, o site abre como um armário: portas de madeira com o progresso real do
+  carregamento (fontes, motor 3D, primeiro quadro) e a fita de LED na fresta; ao chegar em 100% as
+  portas giram em 3D e o hero aparece. Não toca com "reduzir movimento" nem nas páginas internas.
+  O visual das portas está em HTML/CSS no `index.html`, então pinta no primeiro quadro.
 - Projetos, favoritos, orçamento, busca ⌘K e demais páginas continuam.
 
 O código 3D carrega sob demanda (chunk separado), e sem WebGL o site mostra uma ilustração.
-O brilho do LED vem de bloom (pós-processamento); em aparelhos fracos o `dpr` é limitado.
+## Desempenho (fluidez)
+
+- Nada de `backdrop-filter` nem `mix-blend-mode` sobre o canvas 3D (re-desfocam a cada quadro).
+- O 3D só renderiza quando está na tela; monta antes de aparecer (shaders compilam fora da vista).
+- Qualidade adaptativa: o `PerformanceMonitor` reduz resolução e desliga o bloom se o FPS cair.
+- Sombras redesenhadas 1 a cada 3 quadros; sombra de contato "congelada" (refeita ao mudar o móvel).
+- Rolagem com inércia (Lenis), desligada com "reduzir movimento".
+- Anti-versão-velha: o site confere `version.json` e se recarrega se o cache entregou um build antigo.
 
 ## Rodar
 

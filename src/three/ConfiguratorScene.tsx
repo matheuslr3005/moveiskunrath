@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, type ComponentRef } from "react";
+import { useEffect, useMemo, useRef, useState, type ComponentRef } from "react";
 import * as THREE from "three";
 import { HeroScene } from "../components/HeroScene";
 import type { FurnitureConfig, FurnitureKind } from "./config";
@@ -85,15 +85,29 @@ type ConfiguratorSceneProps = {
   className?: string;
 };
 
-export const ConfiguratorScene = ({ config, open, className }: ConfiguratorSceneProps) => (
+/** Valor que só muda depois que o original para de mudar (ex.: o usuário soltou o slider). */
+const useSettled = (value: string, ms: number): string => {
+  const [settled, setSettled] = useState(value);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSettled(value), ms);
+    return () => window.clearTimeout(timer);
+  }, [value, ms]);
+  return settled;
+};
+
+export const ConfiguratorScene = ({ config, open, className }: ConfiguratorSceneProps) => {
+  const shadowKey = useSettled(`${config.kind}-${config.widthCm}`, 350);
+
+  return (
   <SceneCanvas
     className={className}
     camera={{ position: [3.6, 2.0, 6.6], fov: 38 }}
     fallback={<HeroScene />}
     label={`${config.kind} em 3D: arraste para girar e clique nas portas para abrir`}
   >
-    <Stage wallZ={wallZFor(config.kind)} />
+    <Stage wallZ={wallZFor(config.kind)} shadowKey={shadowKey} />
     <Furniture key={config.kind} config={config} open={open} />
     <CameraRig kind={config.kind} />
   </SceneCanvas>
-);
+  );
+};

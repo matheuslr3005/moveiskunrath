@@ -4,6 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { HeroScene } from "../components/HeroScene";
 import { usePrefersReducedMotion } from "../lib/hooks";
+import { introGate, markReady } from "../lib/intro";
 import type { FurnitureConfig } from "./config";
 import { Furniture } from "./Furniture";
 import { useOpenState } from "./openState";
@@ -20,7 +21,8 @@ const HeroRig = ({ reducedMotion }: { reducedMotion: boolean }) => {
   const { size } = useThree();
 
   useFrame((state, delta) => {
-    intro.current = THREE.MathUtils.damp(intro.current, 1, 1.1, delta);
+    // com a entrada ativa, a câmera espera longe até as portas começarem a abrir
+    intro.current = introGate.opened ? THREE.MathUtils.damp(intro.current, 1, 1.1, delta) : 0;
     const aspect = size.width / size.height;
     const fit = aspect < 1.1 ? 1 + (1.1 - aspect) * 1.15 : 1;
     const scroll = Math.min(window.scrollY / window.innerHeight, 1);
@@ -40,6 +42,18 @@ const HeroRig = ({ reducedMotion }: { reducedMotion: boolean }) => {
   return null;
 };
 
+/** Depois de alguns quadros (shaders compilados e primeira imagem pronta), libera a abertura das portas. */
+const ReadySignal = () => {
+  const frames = useRef(0);
+
+  useFrame(() => {
+    frames.current += 1;
+    if (frames.current === 10) markReady("scene");
+  });
+
+  return null;
+};
+
 export const Hero3D = () => {
   const open = useOpenState();
   const reducedMotion = usePrefersReducedMotion();
@@ -49,14 +63,16 @@ export const Hero3D = () => {
       className="absolute inset-0"
       camera={{ position: [6, 2.3, 10], fov: 36 }}
       fallback={<HeroScene />}
+      signalReady
       label="Cozinha sob medida em 3D. Clique nas portas e gavetas para abrir."
     >
       <Stage />
       <Furniture config={HERO_CONFIG} open={open} />
       {!reducedMotion && (
-        <Sparkles count={70} scale={[9, 4, 7]} position={[0, 2, 1.5]} size={2.2} speed={0.25} opacity={0.55} color="#ffd98a" />
+        <Sparkles count={45} scale={[9, 4, 7]} position={[0, 2, 1.5]} size={2.2} speed={0.25} opacity={0.55} color="#ffd98a" />
       )}
       <HeroRig reducedMotion={reducedMotion} />
+      <ReadySignal />
     </SceneCanvas>
   );
 };

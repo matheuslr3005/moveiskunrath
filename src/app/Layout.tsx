@@ -5,6 +5,7 @@ import { Icon } from "../components/Icon";
 import { Logo } from "../components/Logo";
 import { categories } from "../data/categories";
 import { company } from "../data/company";
+import { scrollToTopNow, startSmoothScroll } from "../lib/smoothScroll";
 import { buildWhatsAppUrl, genericGreeting } from "../lib/whatsapp";
 import { CommandPalette } from "./CommandPalette";
 import { SiteHeader } from "./SiteHeader";
@@ -12,7 +13,7 @@ import { SiteHeader } from "./SiteHeader";
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+    scrollToTopNow();
   }, [pathname]);
   return null;
 };
@@ -81,6 +82,8 @@ const WhatsAppFab = () => (
 
 export const Layout = () => {
   const [paletteOpen, setPaletteOpen] = useState(false);
+
+  useEffect(() => startSmoothScroll(), []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

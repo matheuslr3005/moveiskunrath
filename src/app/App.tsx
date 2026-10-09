@@ -9,10 +9,12 @@ import { ProcessPage } from "../pages/ProcessPage";
 import { ProjectDetailPage } from "../pages/ProjectDetailPage";
 import { ProjectsPage } from "../pages/ProjectsPage";
 import { QuotePage } from "../pages/QuotePage";
+import { Intro } from "../features/Intro";
 import { Layout } from "./Layout";
 
 export const App = () => (
   <FavoritesProvider>
+    <Intro />
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />

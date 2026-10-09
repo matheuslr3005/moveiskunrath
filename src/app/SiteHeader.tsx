@@ -59,10 +59,10 @@ export const SiteHeader = ({ onSearch }: SiteHeaderProps) => {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-500",
+          "fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-500",
           overHero
             ? "border-b border-transparent text-white [--btn-ink:#fff]"
-            : "border-b border-line bg-bg/80 text-fg backdrop-blur-md",
+            : "border-b border-line bg-bg/95 text-fg",
         )}
       >
         <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center gap-6 px-5 sm:px-10">
@@ -107,6 +107,7 @@ export const SiteHeader = ({ onSearch }: SiteHeaderProps) => {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
+          data-lenis-prevent
           className="pop-in fixed inset-0 z-50 flex flex-col overflow-y-auto bg-bg px-6 pb-10 pt-5 lg:hidden"
         >
           <div className="flex items-center justify-between">

@@ -19,7 +19,7 @@ export const FavoriteButton = ({ project, className }: { project: Project; class
       title={active ? "Remover do orçamento" : "Adicionar ao orçamento"}
       onClick={() => favorites.toggle(project.slug)}
       className={cn(
-        "flex size-10 items-center justify-center rounded-full border backdrop-blur transition-[transform,background-color,color] active:scale-90",
+        "flex size-10 items-center justify-center rounded-full border transition-[transform,background-color,color] active:scale-90",
         active
           ? "border-transparent bg-accent text-accent-ink"
           : "border-white/25 bg-black/35 text-white hover:bg-black/55",

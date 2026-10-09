@@ -90,7 +90,7 @@ export const Configurator = ({ initial, onChange, pageMode = false }: Configurat
         </Suspense>
         <div
           className={cn(
-            "pointer-events-none absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-black/50 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] backdrop-blur transition-opacity duration-700",
+            "pointer-events-none absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-black/70 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.2em] transition-opacity duration-700",
             touched ? "opacity-0" : "opacity-100",
           )}
         >
@@ -99,6 +99,7 @@ export const Configurator = ({ initial, onChange, pageMode = false }: Configurat
       </div>
 
       <div
+        data-lenis-prevent
         className={cn(
           "hud relative z-10 mx-auto mt-4 w-full max-w-[28rem] rounded-2xl p-5 sm:p-6 lg:absolute lg:left-8 lg:mt-0 lg:w-[24rem] lg:overflow-y-auto lg:overscroll-contain",
           pageMode ? "lg:top-6 lg:max-h-[calc(100%-3rem)]" : "lg:top-6 lg:max-h-[calc(100%-3rem)]",
