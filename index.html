@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#15171a" />
+    <title>Móveis Kunrath · Móveis sob medida</title>
+    <meta
+      name="description"
+      content="Móveis sob medida feitos para realizar sonhos. Empresa familiar com 12 anos de mercado: cozinhas, dormitórios, banheiros, painéis e projetos comerciais."
+    />
+    <link rel="icon" href="/moveiskunrath/favicon.svg" type="image/svg+xml" />
+    <style>html{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;background:#15120f}</style>
+    <script>
+      // Entrada com portas: só na home e sem "reduzir movimento". Roda antes do React.
+      (function () {
+        try {
+          var base = "/moveiskunrath/".replace(/\/$/, "");
+          var path = location.pathname.replace(/\/$/, "");
+          var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (path === base && !reduce) document.documentElement.dataset.intro = "loading";
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/moveiskunrath/assets/index-CxT0MfuO.js"></script>
+    <link rel="stylesheet" crossorigin href="/moveiskunrath/assets/index-CftJltTZ.css">
+  </head>
+  <body>
+    <div id="boot" data-state="loading" aria-hidden="true">
+      <div class="boot-glow"></div>
+      <div class="boot-door boot-door--l"><span class="boot-handle"></span><div class="boot-back"></div></div>
+      <div class="boot-door boot-door--r"><span class="boot-handle"></span><div class="boot-back"></div></div>
+      <div class="boot-seam"></div>
+      <div class="boot-plate"><div data-slot></div></div>
+    </div>
+    <div id="root"></div>
+  </body>
+</html>
