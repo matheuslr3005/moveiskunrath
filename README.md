@@ -3,10 +3,21 @@
 Site de apresentação e cartão de visitas de vendas da Móveis Kunrath (móveis sob medida).
 React 19 + TypeScript + Vite + Tailwind v4 + React Router.
 
-Direção visual: escuro, quente e editorial (referências Kanto e Aurelia): hero de tela cheia,
-títulos em serifa fina (Cormorant), rótulos minúsculos em caixa alta, linhas de grade finas,
-botões em contorno. O amarelo do logo funciona como "luz de LED", usado com parcimônia.
-A interatividade segue a ideia de documento/banco de dados: galeria/tabela, toggles, busca ⌘K.
+Experiência 3D e interativa: o site é um "showroom". Tudo que é 3D é gerado por código
+(three.js + React Three Fiber), sem baixar nenhum modelo ou imagem.
+
+- **Hero 3D:** cozinha modelada em código; a câmera segue o mouse e dá para clicar nas portas e gavetas.
+- **Monte em 3D** (`/montar`): cozinha, guarda-roupa, painel de TV ou banheiro. Largura, acabamento
+  (madeira com veio procedural), puxador, LED, abrir/fechar portas. A URL guarda o móvel
+  (`/montar?m=cozinha&w=380&f=carvalho&h=barra&led=1`): o link já é "o meu móvel".
+  O pedido sai pronto para o WhatsApp ou vai para o orçamento.
+- **Do sonho ao móvel:** animação 3D guiada pelo scroll (rascunho, medição, projeto, acabamentos,
+  montagem, instalação).
+- **Galeria 3D:** carrossel em anel (arraste, inércia, setas) e cartões que inclinam com o mouse.
+- Projetos, favoritos, orçamento, busca ⌘K e demais páginas continuam.
+
+O código 3D carrega sob demanda (chunk separado), e sem WebGL o site mostra uma ilustração.
+O brilho do LED vem de bloom (pós-processamento); em aparelhos fracos o `dpr` é limitado.
 
 ## Rodar
 

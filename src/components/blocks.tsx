@@ -1,9 +1,8 @@
-import { useId, useState, type CSSProperties, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import type { CssVars } from "../lib/css";
 import { useReveal } from "../lib/hooks";
 import { Icon } from "./Icon";
-
-type CssVars = CSSProperties & { [key: `--${string}`]: string };
 
 type RevealProps = { children: ReactNode; delay?: number; className?: string };
 

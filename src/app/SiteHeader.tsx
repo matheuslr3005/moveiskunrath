@@ -5,11 +5,10 @@ import { Logo } from "../components/Logo";
 import { categories } from "../data/categories";
 import { cn } from "../lib/cn";
 import { useFavorites } from "../lib/favorites";
-import { useTheme } from "../lib/hooks";
 
 const navItems = [
+  { to: "/montar", label: "Monte em 3D" },
   { to: "/projetos", label: "Projetos" },
-  { to: "/sobre", label: "Sobre" },
   { to: "/como-funciona", label: "Como funciona" },
   { to: "/contato", label: "Contato" },
 ] as const;
@@ -37,7 +36,6 @@ type SiteHeaderProps = { onSearch: () => void };
 
 export const SiteHeader = ({ onSearch }: SiteHeaderProps) => {
   const { pathname } = useLocation();
-  const { theme, toggle } = useTheme();
   const favorites = useFavorites();
   const scrolled = useScrolled(24);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -83,14 +81,6 @@ export const SiteHeader = ({ onSearch }: SiteHeaderProps) => {
           <div className="ml-auto flex items-center gap-1 lg:ml-0">
             <button type="button" onClick={onSearch} aria-label="Buscar" className="btn btn-ghost size-10 !min-h-0 !p-0">
               <Icon name="search" className="size-[1.125rem]" />
-            </button>
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
-              className="btn btn-ghost size-10 !min-h-0 !p-0"
-            >
-              <Icon name={theme === "dark" ? "sun" : "moon"} className="size-[1.125rem]" />
             </button>
             <Link to="/orcamento" className="btn ml-2 hidden !min-h-10 sm:inline-flex">
               Orçamento

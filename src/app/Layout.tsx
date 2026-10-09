@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
+import { CursorLight } from "../components/CursorLight";
 import { Icon } from "../components/Icon";
 import { Logo } from "../components/Logo";
 import { categories } from "../data/categories";
@@ -100,6 +101,7 @@ export const Layout = () => {
         <Outlet />
       </main>
       <Footer />
+      <CursorLight />
       <WhatsAppFab />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>

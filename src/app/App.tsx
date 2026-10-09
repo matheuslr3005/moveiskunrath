@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import { FavoritesProvider } from "../lib/favorites";
 import { AboutPage } from "../pages/AboutPage";
+import { ConfiguratorPage } from "../pages/ConfiguratorPage";
 import { ContactPage } from "../pages/ContactPage";
 import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -15,6 +16,7 @@ export const App = () => (
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="montar" element={<ConfiguratorPage />} />
         <Route path="projetos" element={<ProjectsPage />} />
         <Route path="projetos/:slug" element={<ProjectDetailPage />} />
         <Route path="sobre" element={<AboutPage />} />

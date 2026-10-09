@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { writeStorage } from "./storage";
 
 export type Theme = "dark" | "light";
@@ -100,4 +100,32 @@ export const useCopyToClipboard = () => {
   }, []);
 
   return { copied, copy };
+};
+
+/** true enquanto o elemento está (quase) visível; usado para pausar o WebGL fora da tela. */
+export const useInView = (ref: RefObject<HTMLElement | null>, margin = "0px"): boolean => {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(Boolean(entry?.isIntersecting)), { rootMargin: margin });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [ref, margin]);
+
+  return inView;
+};
+
+export const usePrefersReducedMotion = (): boolean => {
+  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setReduced(query.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  return reduced;
 };

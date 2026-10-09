@@ -10,7 +10,6 @@ import {
   buildQuoteMessage,
   emptyDraft,
   finishOptions,
-  parseDraft,
   styleOptions,
   timelineOptions,
   type QuoteDraft,
@@ -18,7 +17,7 @@ import {
 import { cn } from "../lib/cn";
 import { useFavorites } from "../lib/favorites";
 import { useCopyToClipboard } from "../lib/hooks";
-import { usePersistentState } from "../lib/storage";
+import { useQuoteDraft } from "../lib/quoteDraft";
 import { buildWhatsAppUrl } from "../lib/whatsapp";
 
 type ChipGroupProps<T extends string> = {
@@ -91,7 +90,7 @@ export const QuotePage = () => {
   const [params] = useSearchParams();
   const favorites = useFavorites();
   const { copied, copy } = useCopyToClipboard();
-  const [draft, update] = usePersistentState<QuoteDraft>({ key: "quote-draft", initial: emptyDraft, parse: parseDraft });
+  const [draft, update] = useQuoteDraft();
 
   const reference = findProject(params.get("ref") ?? undefined);
   const referenceCategory = reference?.category;

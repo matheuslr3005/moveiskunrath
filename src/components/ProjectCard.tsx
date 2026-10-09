@@ -5,6 +5,7 @@ import { cn } from "../lib/cn";
 import { useFavorites } from "../lib/favorites";
 import { Icon } from "./Icon";
 import { ProjectCover } from "./ProjectCover";
+import { Tilt } from "./Tilt";
 
 export const FavoriteButton = ({ project, className }: { project: Project; className?: string }) => {
   const favorites = useFavorites();
@@ -36,12 +37,14 @@ export const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <div className="relative">
       <Link to={`/projetos/${project.slug}`} className="group block">
-        <div className="aspect-[4/3] overflow-hidden rounded-md border border-line">
-          <ProjectCover
-            project={project}
-            className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-          />
-        </div>
+        <Tilt>
+          <div className="aspect-[4/3] overflow-hidden rounded-md border border-line shadow-[0_24px_50px_-28px_rgb(0_0_0/0.9)]">
+            <ProjectCover
+              project={project}
+              className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+            />
+          </div>
+        </Tilt>
         <p className="eyebrow mt-5 !gap-0 before:hidden">
           {category.singular} · {project.style}
         </p>
