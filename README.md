@@ -1,8 +1,12 @@
 # Móveis Kunrath
 
 Site de apresentação e cartão de visitas de vendas da Móveis Kunrath (móveis sob medida).
-React 19 + TypeScript + Vite + Tailwind v4 + React Router. Visual inspirado no Notion
-(sidebar em árvore, capa, propriedades, toggles, galeria/tabela, busca ⌘K) com a paleta do logo.
+React 19 + TypeScript + Vite + Tailwind v4 + React Router.
+
+Direção visual: escuro, quente e editorial (referências Kanto e Aurelia): hero de tela cheia,
+títulos em serifa fina (Cormorant), rótulos minúsculos em caixa alta, linhas de grade finas,
+botões em contorno. O amarelo do logo funciona como "luz de LED", usado com parcimônia.
+A interatividade segue a ideia de documento/banco de dados: galeria/tabela, toggles, busca ⌘K.
 
 ## Rodar
 
@@ -38,6 +42,13 @@ Tudo que o cliente precisa revisar está em `src/data/`:
 | `categories.ts` | Ambientes (iguais aos destaques do Instagram). |
 
 Os textos de "Sobre" e "Dúvidas rápidas" também são genéricos: revisar com o cliente.
+
+## Foto de capa
+
+A home mostra uma ilustração (cozinha em penumbra com LED) enquanto não há foto. Para usar uma
+foto de ambiente da Kunrath: coloque em `public/hero.jpg` e troque `heroImage` em
+`src/data/company.ts` para `"/hero.jpg"`. O visual foi pensado para fotos escuras e
+cinematográficas, então a qualidade da fotografia é o que mais vai elevar o site.
 
 ## Marca
 

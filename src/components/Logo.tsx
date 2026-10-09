@@ -5,7 +5,7 @@ type LogoProps = { className?: string; /** Fundo sempre escuro (ex.: capa): mant
 /** Recriação em texto do logotipo: "M" amarelo + ÓVEIS, KUNRATH em branco. */
 export const Logo = ({ className, onDark = false }: LogoProps) => (
   <span
-    className={cn("inline-flex items-end font-display leading-none select-none", className)}
+    className={cn("inline-flex items-end font-logo leading-none select-none", className)}
     role="img"
     aria-label="Móveis Kunrath"
   >

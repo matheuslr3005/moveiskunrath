@@ -17,3 +17,6 @@ export const company = {
     url: "https://www.instagram.com/moveiskunrath/",
   },
 } as const;
+
+/** Foto de capa da home (ex.: "/hero.jpg" em public/). null = usa a ilustração. */
+export const heroImage: string | null = null;

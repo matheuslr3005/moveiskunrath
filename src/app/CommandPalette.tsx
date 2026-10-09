@@ -6,22 +6,21 @@ import { projects } from "../data/projects";
 import { cn } from "../lib/cn";
 import { normalize } from "../lib/text";
 
-type Entry = { id: string; label: string; hint: string; emoji: string; to: string };
+type Entry = { id: string; label: string; hint: string; to: string };
 
 const pageEntries: Entry[] = [
-  { id: "home", label: "Início", hint: "Página", emoji: "🏠", to: "/" },
-  { id: "projects", label: "Todos os projetos", hint: "Página", emoji: "🖼️", to: "/projetos" },
-  { id: "about", label: "Sobre a Kunrath", hint: "Página", emoji: "🪵", to: "/sobre" },
-  { id: "process", label: "Como funciona", hint: "Página", emoji: "🧭", to: "/como-funciona" },
-  { id: "quote", label: "Pedir orçamento", hint: "Página", emoji: "📝", to: "/orcamento" },
-  { id: "contact", label: "Contato", hint: "Página", emoji: "💬", to: "/contato" },
+  { id: "home", label: "Início", hint: "Página", to: "/" },
+  { id: "projects", label: "Todos os projetos", hint: "Página", to: "/projetos" },
+  { id: "about", label: "Sobre a Kunrath", hint: "Página", to: "/sobre" },
+  { id: "process", label: "Como funciona", hint: "Página", to: "/como-funciona" },
+  { id: "quote", label: "Pedir orçamento", hint: "Página", to: "/orcamento" },
+  { id: "contact", label: "Contato", hint: "Página", to: "/contato" },
 ];
 
 const categoryEntries: Entry[] = categories.map((category) => ({
   id: `cat-${category.id}`,
   label: category.label,
   hint: "Ambiente",
-  emoji: category.emoji,
   to: `/projetos?c=${category.id}`,
 }));
 
@@ -29,7 +28,6 @@ const projectEntries: Entry[] = projects.map((project) => ({
   id: `project-${project.slug}`,
   label: project.title,
   hint: categoryById[project.category].singular,
-  emoji: categoryById[project.category].emoji,
   to: `/projetos/${project.slug}`,
 }));
 
@@ -86,7 +84,7 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
         aria-label="Buscar no site"
         onMouseDown={(event) => event.stopPropagation()}
         onKeyDown={onKeyDown}
-        className="pop-in w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-elev shadow-[var(--shadow)]"
+        className="pop-in w-full max-w-xl overflow-hidden rounded-lg border border-line bg-elev shadow-[var(--shadow)]"
       >
         <div className="flex items-center gap-3 border-b border-line px-4">
           <Icon name="search" className="size-5 text-muted" />
@@ -116,9 +114,6 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
                   index === cursor && "bg-hover",
                 )}
               >
-                <span aria-hidden="true" className="w-6 text-center text-lg">
-                  {entry.emoji}
-                </span>
                 <span className="flex-1 truncate font-medium">{entry.label}</span>
                 <span className="text-xs text-muted">{entry.hint}</span>
               </button>

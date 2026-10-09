@@ -15,6 +15,10 @@ const paths = {
   copy: "M9 9h10v10H9zM5 15V5h10",
   grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
   table: "M4 5h16v14H4zM4 10h16M10 5v14",
+  ruler: "M3 17 17 3l4 4L7 21zM7 13l2 2m1-5 2 2m1-5 2 2",
+  home: "M4 11 12 4l8 7v9H4zM10 20v-6h4v6",
+  sparkle: "M12 3v4m0 10v4M3 12h4m10 0h4M6.3 6.3l2.4 2.4m6.6 6.6 2.4 2.4m0-11.4-2.4 2.4M8.7 15.3l-2.4 2.4",
+  seal: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-3.5-9 2.5 2.5 4.5-5",
   external: "M14 4h6v6m0-6L10 14M18 14v5H5V6h5",
 } as const;
 

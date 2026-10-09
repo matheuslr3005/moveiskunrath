@@ -3,7 +3,7 @@ import { Icon } from "../components/Icon";
 import { Page } from "../components/Page";
 import { FavoriteButton, ProjectCard } from "../components/ProjectCard";
 import { ProjectCover } from "../components/ProjectCover";
-import { Callout, PropertyTable, Section } from "../components/blocks";
+import { PropertyTable, Section } from "../components/blocks";
 import { categoryById } from "../data/categories";
 import { findProject, projects } from "../data/projects";
 import { useCopyToClipboard } from "../lib/hooks";
@@ -25,11 +25,15 @@ export const ProjectDetailPage = () => {
   return (
     <Page
       title={project.title}
-      emoji={category.emoji}
-      cover={<ProjectCover project={project} />}
+      overline={`${category.singular} · ${project.style}`}
+      media={
+        <div className="aspect-[16/8] overflow-hidden rounded-md border border-line">
+          <ProjectCover project={project} />
+        </div>
+      }
       description={project.summary}
     >
-      <nav aria-label="Trilha" className="mt-6 flex flex-wrap items-center gap-1.5 text-sm text-muted">
+      <nav aria-label="Trilha" className="mt-8 flex flex-wrap items-center gap-2 text-[0.6875rem] uppercase tracking-[0.2em] text-muted">
         <Link to="/projetos" className="hover:text-fg">
           Projetos
         </Link>
@@ -40,22 +44,22 @@ export const ProjectDetailPage = () => {
       </nav>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <Link to={`/orcamento?ref=${project.slug}`} className="btn btn-primary min-h-11 px-5">
+        <Link to={`/orcamento?ref=${project.slug}`} className="btn btn-primary">
           Pedir orçamento parecido
         </Link>
-        <a href={buildWhatsAppUrl(askMessage)} target="_blank" rel="noreferrer" className="btn min-h-11 px-4">
+        <a href={buildWhatsAppUrl(askMessage)} target="_blank" rel="noreferrer" className="btn">
           <Icon name="whatsapp" className="size-4" /> WhatsApp
         </a>
-        <button type="button" className="btn min-h-11 px-4" onClick={() => copy(window.location.href)}>
+        <button type="button" className="btn" onClick={() => copy(window.location.href)}>
           <Icon name={copied ? "check" : "link"} className="size-4" /> {copied ? "Link copiado" : "Copiar link"}
         </button>
-        <FavoriteButton project={project} className="size-11" />
+        <FavoriteButton project={project} className="size-11 !border-line !bg-transparent !text-fg" />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-12 max-w-3xl">
         <PropertyTable
           items={[
-            { label: "Ambiente", value: <span className="tag">{category.emoji} {category.singular}</span> },
+            { label: "Ambiente", value: <span className="tag">{category.singular}</span> },
             { label: "Estilo", value: project.style },
             { label: "Acabamento", value: project.finish },
             {
@@ -84,11 +88,11 @@ export const ProjectDetailPage = () => {
         />
       </div>
 
-      <section className="mt-10">
-        <p className="prose-block">{project.description}</p>
-        <ul className="mt-6 grid gap-2 sm:grid-cols-3">
+      <section className="mt-14">
+        <p className="display-lg max-w-4xl !text-3xl !leading-[1.25] sm:!text-4xl">{project.description}</p>
+        <ul className="mt-12 grid border-y border-line sm:grid-cols-3">
           {project.highlights.map((highlight) => (
-            <li key={highlight} className="card flex items-center gap-2.5 px-4 py-3 text-sm font-medium">
+            <li key={highlight} className="flex items-center gap-3 border-line px-1 py-5 text-sm font-light sm:border-l sm:px-8 sm:first:border-l-0">
               <Icon name="check" className="size-4 shrink-0 text-accent-text" />
               {highlight}
             </li>
@@ -97,10 +101,10 @@ export const ProjectDetailPage = () => {
       </section>
 
       {hasPhotos && project.images.length > 1 && (
-        <Section title="Fotos" emoji="📷">
-          <div className="grid gap-3 sm:grid-cols-2">
+        <Section title="Fotos" overline="Galeria">
+          <div className="grid gap-4 sm:grid-cols-2">
             {project.images.map((image, index) => (
-              <div key={image} className="aspect-[4/3] overflow-hidden rounded-xl border border-line">
+              <div key={image} className="aspect-[4/3] overflow-hidden rounded-md border border-line">
                 <ProjectCover project={project} imageIndex={index} />
               </div>
             ))}
@@ -109,14 +113,14 @@ export const ProjectDetailPage = () => {
       )}
 
       {!hasPhotos && (
-        <Callout emoji="🖼️" className="mt-10">
-          <p>Ilustração de exemplo. As fotos reais deste projeto entram aqui assim que forem adicionadas.</p>
-        </Callout>
+        <p className="mt-6 text-[0.6875rem] uppercase tracking-[0.2em] text-muted">
+          Ilustração de exemplo · as fotos reais deste projeto entram aqui
+        </p>
       )}
 
       {related.length > 0 && (
-        <Section title={`Mais em ${category.label}`} emoji={category.emoji}>
-          <div className="grid gap-4 sm:grid-cols-2">
+        <Section title={`Mais em ${category.label}`} overline="Relacionados">
+          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <ProjectCard key={item.slug} project={item} />
             ))}

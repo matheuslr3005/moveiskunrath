@@ -21,7 +21,7 @@ export const FavoriteButton = ({ project, className }: { project: Project; class
         "flex size-10 items-center justify-center rounded-full border backdrop-blur transition-[transform,background-color,color] active:scale-90",
         active
           ? "border-transparent bg-accent text-accent-ink"
-          : "border-line bg-bg/70 text-fg hover:bg-bg",
+          : "border-white/25 bg-black/35 text-white hover:bg-black/55",
         className,
       )}
     >
@@ -35,23 +35,20 @@ export const ProjectCard = ({ project }: { project: Project }) => {
 
   return (
     <div className="relative">
-      <Link to={`/projetos/${project.slug}`} className="card group block overflow-hidden">
-        <div className="aspect-[4/3] overflow-hidden border-b border-line">
+      <Link to={`/projetos/${project.slug}`} className="group block">
+        <div className="aspect-[4/3] overflow-hidden rounded-md border border-line">
           <ProjectCover
             project={project}
-            className="transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
           />
         </div>
-        <div className="space-y-2 p-4">
-          <h3 className="pr-10 text-base font-bold leading-snug">{project.title}</h3>
-          <p className="line-clamp-2 text-sm text-muted">{project.summary}</p>
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            <span className="tag">
-              {category.emoji} {category.singular}
-            </span>
-            <span className="tag">{project.style}</span>
-          </div>
-        </div>
+        <p className="eyebrow mt-5 !gap-0 before:hidden">
+          {category.singular} · {project.style}
+        </p>
+        <h3 className="mt-2 pr-10 font-display text-3xl font-light leading-[1.05] transition-colors group-hover:text-accent-text">
+          {project.title}
+        </h3>
+        <p className="mt-2 line-clamp-2 max-w-md text-sm font-light text-muted">{project.summary}</p>
       </Link>
       <FavoriteButton project={project} className="absolute right-3 top-3" />
     </div>

@@ -30,7 +30,7 @@ type ChipGroupProps<T extends string> = {
 
 const ChipGroup = <T extends string>({ label, options, value, onChange }: ChipGroupProps<T>) => (
   <fieldset>
-    <legend className="mb-2 text-sm font-semibold">{label}</legend>
+    <legend className="eyebrow mb-4">{label}</legend>
     <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={label}>
       {options.map((option) => (
         <button
@@ -64,12 +64,12 @@ const WhatsAppText = ({ text }: { text: string }) => (
 const FavoriteRow = ({ project }: { project: Project }) => {
   const favorites = useFavorites();
   return (
-    <li className="flex items-center gap-3 rounded-lg border border-line bg-bg p-2 pr-3">
+    <li className="flex items-center gap-3 border-b border-line py-3 pr-1">
       <Link to={`/projetos/${project.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
-        <span className="block h-11 w-16 shrink-0 overflow-hidden rounded-md border border-line">
+        <span className="block h-14 w-20 shrink-0 overflow-hidden rounded-sm border border-line">
           <ProjectCover project={project} />
         </span>
-        <span className="truncate text-sm font-semibold">{project.title}</span>
+        <span className="truncate font-display text-2xl font-light">{project.title}</span>
       </Link>
       {favorites.has(project.slug) ? (
         <button
@@ -127,13 +127,13 @@ export const QuotePage = () => {
   return (
     <Page
       title="Orçamento"
-      emoji="📝"
+      overline="05 · Orçamento"
       description="Conte o que você precisa. Montamos a mensagem para você enviar direto no WhatsApp, sem formulário longo e sem cadastro."
     >
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_21rem]">
-        <form className="space-y-7" onSubmit={(event) => event.preventDefault()}>
+      <div className="mt-16 grid gap-14 lg:grid-cols-[1fr_24rem]">
+        <form className="max-w-2xl space-y-9" onSubmit={(event) => event.preventDefault()}>
           <div>
-            <label htmlFor="quote-name" className="mb-2 block text-sm font-semibold">
+            <label htmlFor="quote-name" className="eyebrow mb-4 flex">
               Seu nome
             </label>
             <input
@@ -147,7 +147,7 @@ export const QuotePage = () => {
           </div>
 
           <fieldset>
-            <legend className="mb-2 text-sm font-semibold">Quais ambientes?</legend>
+            <legend className="eyebrow mb-4">Quais ambientes?</legend>
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
@@ -157,7 +157,7 @@ export const QuotePage = () => {
                   aria-pressed={draft.rooms.includes(category.id)}
                   onClick={() => toggleRoom(category.id)}
                 >
-                  <span aria-hidden="true">{category.emoji}</span> {category.label}
+                  {category.label}
                 </button>
               ))}
             </div>
@@ -166,7 +166,7 @@ export const QuotePage = () => {
           <ChipGroup label="Estilo" options={styleOptions} value={draft.style} onChange={(value) => setField("style", value)} />
 
           <fieldset>
-            <legend className="mb-2 text-sm font-semibold">Acabamento</legend>
+            <legend className="eyebrow mb-4">Acabamento</legend>
             <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Acabamento">
               {finishOptions.map((option) => (
                 <button
@@ -192,7 +192,7 @@ export const QuotePage = () => {
           />
 
           <div>
-            <label htmlFor="quote-notes" className="mb-2 block text-sm font-semibold">
+            <label htmlFor="quote-notes" className="eyebrow mb-4 flex">
               Medidas e detalhes <span className="font-normal text-muted">(opcional)</span>
             </label>
             <textarea
@@ -215,8 +215,8 @@ export const QuotePage = () => {
         </form>
 
         <aside className="lg:sticky lg:top-20 lg:self-start">
-          <div className="card space-y-4 p-4">
-            <h2 className="font-bold">Pré-visualização da mensagem</h2>
+          <div className="card space-y-5 p-5">
+            <h2 className="eyebrow">Prévia da mensagem</h2>
             <pre
               className={cn(
                 "max-h-[22rem] overflow-y-auto whitespace-pre-wrap break-words rounded-xl rounded-tl-sm p-3",
@@ -240,9 +240,9 @@ export const QuotePage = () => {
         </aside>
       </div>
 
-      <Section title="Projetos que você curtiu" emoji="❤️">
+      <Section title="Projetos que você curtiu" overline="Favoritos">
         {attached.length === 0 ? (
-          <div className="card p-6 text-center">
+          <div className="border-y border-line px-6 py-12 text-center">
             <p className="text-muted">
               Toque no coração dos projetos para guardá-los aqui. Eles vão junto na mensagem, e a gente já entende o seu gosto.
             </p>
@@ -251,7 +251,7 @@ export const QuotePage = () => {
             </Link>
           </div>
         ) : (
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid gap-x-12 border-t border-line sm:grid-cols-2">
             {attached.map((project) => (
               <FavoriteRow key={project.slug} project={project} />
             ))}

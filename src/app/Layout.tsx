@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import { Icon } from "../components/Icon";
+import { Logo } from "../components/Logo";
+import { categories } from "../data/categories";
 import { company } from "../data/company";
-import { useTheme } from "../lib/hooks";
 import { buildWhatsAppUrl, genericGreeting } from "../lib/whatsapp";
 import { CommandPalette } from "./CommandPalette";
-import { Sidebar } from "./Sidebar";
+import { SiteHeader } from "./SiteHeader";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -15,47 +16,52 @@ const ScrollToTop = () => {
   return null;
 };
 
-const TopBar = ({ onMenu, onSearch }: { onMenu: () => void; onSearch: () => void }) => {
-  const { theme, toggle } = useTheme();
-
-  return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-line bg-bg/85 px-3 backdrop-blur sm:px-6">
-      <button type="button" onClick={onMenu} aria-label="Abrir menu" className="btn btn-ghost size-10 !p-0 lg:hidden">
-        <Icon name="menu" className="size-5" />
-      </button>
-      <div className="flex-1" />
-      <button type="button" onClick={onSearch} aria-label="Buscar" className="btn btn-ghost size-10 !p-0">
-        <Icon name="search" className="size-5" />
-      </button>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
-        className="btn btn-ghost size-10 !p-0"
-      >
-        <Icon name={theme === "dark" ? "sun" : "moon"} className="size-5" />
-      </button>
-      <Link to="/orcamento" className="btn btn-primary">
-        Pedir orçamento
-      </Link>
-    </header>
-  );
-};
+const FooterColumn = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div>
+    <p className="eyebrow mb-5">{title}</p>
+    <ul className="space-y-3 text-sm font-light">{children}</ul>
+  </div>
+);
 
 const Footer = () => (
-  <footer className="border-t border-line px-5 py-10 text-sm text-muted sm:px-10">
-    <div className="mx-auto flex max-w-[56rem] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <p>
-        © {new Date().getFullYear()} {company.name} · {company.segment}
-      </p>
-      <div className="flex gap-5">
-        <a href={company.instagram.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:text-fg">
-          <Icon name="instagram" className="size-4" /> {company.instagram.handle}
-        </a>
-        <a href={buildWhatsAppUrl(genericGreeting)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:text-fg">
-          <Icon name="whatsapp" className="size-4" /> {company.whatsapp.display}
-        </a>
+  <footer className="border-t border-line">
+    <div className="grid-lines mx-auto max-w-[90rem] px-5 py-16 sm:px-10">
+      <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="space-y-5">
+          <Logo className="text-xl" />
+          <p className="max-w-xs font-display text-2xl font-light leading-tight">{company.slogan}</p>
+        </div>
+        <FooterColumn title="Ambientes">
+          {categories.map((category) => (
+            <li key={category.id}>
+              <Link to={`/projetos?c=${category.id}`} className="text-muted transition-colors hover:text-fg">
+                {category.label}
+              </Link>
+            </li>
+          ))}
+        </FooterColumn>
+        <FooterColumn title="Site">
+          <li><Link to="/projetos" className="text-muted transition-colors hover:text-fg">Projetos</Link></li>
+          <li><Link to="/sobre" className="text-muted transition-colors hover:text-fg">Sobre</Link></li>
+          <li><Link to="/como-funciona" className="text-muted transition-colors hover:text-fg">Como funciona</Link></li>
+          <li><Link to="/orcamento" className="text-muted transition-colors hover:text-fg">Orçamento</Link></li>
+        </FooterColumn>
+        <FooterColumn title="Contato">
+          <li>
+            <a href={buildWhatsAppUrl(genericGreeting)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-muted transition-colors hover:text-fg">
+              <Icon name="whatsapp" className="size-4" /> {company.whatsapp.display}
+            </a>
+          </li>
+          <li>
+            <a href={company.instagram.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-muted transition-colors hover:text-fg">
+              <Icon name="instagram" className="size-4" /> {company.instagram.handle}
+            </a>
+          </li>
+        </FooterColumn>
       </div>
+    </div>
+    <div className="border-t border-line px-5 py-5 text-center text-[0.6875rem] uppercase tracking-[0.2em] text-muted sm:px-10">
+      © {new Date().getFullYear()} {company.name} · {company.segment}
     </div>
   </footer>
 );
@@ -73,11 +79,7 @@ const WhatsAppFab = () => (
 );
 
 export const Layout = () => {
-  const location = useLocation();
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
-
-  useEffect(() => setDrawerOpen(false), [location.pathname, location.search]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -91,23 +93,13 @@ export const Layout = () => {
   }, []);
 
   return (
-    <div className="flex min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <ScrollToTop />
-      <Sidebar
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        onSearch={() => {
-          setDrawerOpen(false);
-          setPaletteOpen(true);
-        }}
-      />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar onMenu={() => setDrawerOpen(true)} onSearch={() => setPaletteOpen(true)} />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <SiteHeader onSearch={() => setPaletteOpen(true)} />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
       <WhatsAppFab />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>

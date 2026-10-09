@@ -1,44 +1,45 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
+@import "@fontsource-variable/cormorant";
 @import "@fontsource-variable/montserrat";
 
 /*
- * Identidade derivada do logo (fundo grafite + amarelo + branco).
- * Tudo passa por tokens: trocar a marca = trocar este bloco.
+ * Direção visual: escuro, quente e editorial (referências Kanto + Aurelia).
+ * O amarelo do logo vira "luz de LED": usado com parcimônia, só onde guia o olhar.
  */
 :root,
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #15171a;
-  --bg-elev: #1b1e22;
-  --bg-hover: #23272c;
-  --line: #2b2f35;
-  --fg: #f5f4f0;
-  --muted: #9aa0a8;
+  --bg: #15120f;
+  --bg-elev: #1d1915;
+  --bg-hover: #27221d;
+  --line: rgb(236 224 205 / 0.14);
+  --fg: #efe7da;
+  --muted: #a39786;
   --accent: #f7cd48;
-  --accent-ink: #15171a;
+  --accent-ink: #17130d;
   --accent-text: #f7cd48;
-  --cover-wall: #20242a;
-  --cover-floor: #1a1d21;
-  --cover-soft: rgb(255 255 255 / 0.1);
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --cover-wall: #2a2420;
+  --cover-floor: #1c1814;
+  --cover-soft: rgb(255 240 220 / 0.1);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 18px 40px -16px rgb(0 0 0 / 0.7);
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #fbfaf6;
-  --bg-elev: #ffffff;
-  --bg-hover: #f1efe7;
-  --line: #e4e1d6;
-  --fg: #1a1c20;
-  --muted: #6a6f77;
+  --bg: #ece6db;
+  --bg-elev: #f4efe6;
+  --bg-hover: #e1dacc;
+  --line: rgb(50 36 20 / 0.18);
+  --fg: #231d16;
+  --muted: #6d6252;
   --accent: #f7cd48;
-  --accent-ink: #15171a;
-  --accent-text: #7d5f00;
-  --cover-wall: #ebe8dd;
-  --cover-floor: #dedacb;
-  --cover-soft: rgb(0 0 0 / 0.1);
-  --shadow: 0 1px 2px rgb(20 20 20 / 0.06), 0 12px 32px -14px rgb(20 20 20 / 0.25);
+  --accent-ink: #17130d;
+  --accent-text: #6e5200;
+  --cover-wall: #d9d0c1;
+  --cover-floor: #c9bfae;
+  --cover-soft: rgb(40 28 14 / 0.1);
+  --shadow: 0 1px 2px rgb(40 28 14 / 0.08), 0 18px 40px -18px rgb(40 28 14 / 0.35);
 }
 
 @theme inline {
@@ -52,7 +53,8 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-text: var(--accent-text);
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat Variable", "Inter Variable", ui-sans-serif, sans-serif;
+  --font-logo: "Montserrat Variable", "Inter Variable", ui-sans-serif, sans-serif;
+  --font-display: "Cormorant Variable", "Cormorant Garamond", Georgia, serif;
 }
 
 @layer base {
@@ -63,6 +65,7 @@
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -72,13 +75,16 @@
   }
   :focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 6px;
+    outline-offset: 3px;
+    border-radius: 4px;
   }
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
     text-wrap: balance;
   }
   p {
@@ -90,29 +96,56 @@
 }
 
 @layer components {
+  /* Rótulo miúdo em caixa alta, como no menu das referências. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 2.5rem;
-    padding: 0 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
+    min-height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
     font-weight: 600;
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-    color: var(--fg);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid color-mix(in srgb, var(--btn-ink, var(--fg)) 32%, transparent);
+    background: transparent;
+    color: var(--btn-ink, var(--fg));
     transition:
-      background-color 150ms,
-      border-color 150ms,
+      background-color 200ms,
+      border-color 200ms,
+      color 200ms,
       transform 120ms;
   }
   .btn:hover {
-    background: var(--bg-hover);
+    background: color-mix(in srgb, var(--btn-ink, var(--fg)) 9%, transparent);
+    border-color: color-mix(in srgb, var(--btn-ink, var(--fg)) 60%, transparent);
   }
   .btn:active {
     transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    pointer-events: none;
   }
   .btn-primary {
     background: var(--accent);
@@ -120,34 +153,58 @@
     border-color: transparent;
   }
   .btn-primary:hover {
-    background: color-mix(in srgb, var(--accent) 88%, white);
+    background: color-mix(in srgb, var(--accent) 86%, white);
+    border-color: transparent;
   }
   .btn-ghost {
-    background: transparent;
     border-color: transparent;
+  }
+
+  /* Link sublinhado fino: "EXPLORAR COLEÇÃO". */
+  .link-under {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+    transition:
+      border-color 200ms,
+      color 200ms,
+      gap 200ms;
+  }
+  .link-under:hover {
+    border-color: var(--accent);
+    color: var(--accent-text);
+    gap: 0.85rem;
   }
 
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    min-height: 2rem;
-    padding: 0 0.75rem;
+    min-height: 2.25rem;
+    padding: 0 1rem;
     border-radius: 999px;
-    font-size: 0.8125rem;
+    font-size: 0.6875rem;
     font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     border: 1px solid var(--line);
     background: transparent;
     color: var(--muted);
     transition:
-      background-color 150ms,
-      color 150ms,
-      border-color 150ms,
+      background-color 200ms,
+      color 200ms,
+      border-color 200ms,
       transform 120ms;
   }
   .chip:hover {
     color: var(--fg);
-    background: var(--bg-hover);
+    border-color: color-mix(in srgb, var(--fg) 40%, transparent);
   }
   .chip:active {
     transform: scale(0.96);
@@ -163,37 +220,39 @@
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.375rem;
-    font-size: 0.75rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 0.625rem;
     font-weight: 500;
-    background: var(--bg-hover);
-    color: var(--fg);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   .card {
     border: 1px solid var(--line);
     background: var(--bg-elev);
-    border-radius: 0.875rem;
+    border-radius: 0.5rem;
     transition:
-      transform 200ms ease,
-      border-color 200ms,
-      box-shadow 200ms;
+      transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 300ms,
+      box-shadow 300ms;
   }
   a.card:hover,
   .card-hover:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
     box-shadow: var(--shadow);
   }
 
   .field {
     width: 100%;
-    min-height: 2.75rem;
-    padding: 0.625rem 0.875rem;
-    border-radius: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
     border: 1px solid var(--line);
-    background: var(--bg);
+    background: transparent;
     color: var(--fg);
     font-size: 1rem;
   }
@@ -203,37 +262,55 @@
   .field:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
   }
 
-  /* Notion-like page cover: veio de madeira + corte amarelo, sem foto. */
-  .page-cover {
-    background:
-      linear-gradient(
-        112deg,
-        transparent 0 66%,
-        var(--accent) 66% 66.5%,
-        color-mix(in srgb, var(--accent) 10%, transparent) 66.5% 100%
-      ),
-      repeating-linear-gradient(100deg, rgb(255 255 255 / 0.035) 0 2px, transparent 2px 10px),
-      linear-gradient(135deg, #1d2025, #101215);
+  /* Linhas verticais finas sobre a imagem, como no slide da Kanto. */
+  .grid-lines {
+    background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+    background-size: 25% 100%;
+  }
+  .grid-lines-dark {
+    background-image: linear-gradient(to right, rgb(255 240 220 / 0.14) 1px, transparent 1px);
+    background-size: 25% 100%;
   }
 
   .prose-block {
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: color-mix(in srgb, var(--fg) 88%, var(--muted));
+    font-size: 1rem;
+    line-height: 1.85;
+    font-weight: 300;
+    color: color-mix(in srgb, var(--fg) 82%, var(--muted));
+  }
+
+  .display-xl {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
   }
 }
 
-/* Revelação ao rolar — só quando o usuário não pediu menos movimento. */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(18px);
     transition:
-      opacity 600ms ease,
-      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+      opacity 900ms ease,
+      transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal.is-visible {
@@ -241,12 +318,23 @@
     transform: none;
   }
   .pop-in {
-    animation: pop-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: pop-in 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   @keyframes pop-in {
     from {
       opacity: 0;
-      transform: translateY(8px) scale(0.985);
+      transform: translateY(10px) scale(0.99);
+    }
+  }
+  .spin-slow {
+    animation: spin-slow 40s linear infinite;
+  }
+  .led-pulse {
+    animation: led-pulse 6s ease-in-out infinite;
+  }
+  @keyframes led-pulse {
+    50% {
+      opacity: 0.72;
     }
   }
 }

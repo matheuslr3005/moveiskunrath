@@ -21,7 +21,7 @@ const matchesQuery = (project: Project, query: string): boolean => {
 };
 
 const GalleryView = ({ items }: { items: Project[] }) => (
-  <div className="grid gap-4 sm:grid-cols-2">
+  <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
     {items.map((project) => (
       <ProjectCard key={project.slug} project={project} />
     ))}
@@ -29,10 +29,10 @@ const GalleryView = ({ items }: { items: Project[] }) => (
 );
 
 const TableView = ({ items }: { items: Project[] }) => (
-  <div className="overflow-x-auto rounded-xl border border-line bg-elev">
+  <div className="overflow-x-auto border-y border-line">
     <table className="w-full min-w-[40rem] text-left text-sm">
       <thead>
-        <tr className="border-b border-line text-muted">
+        <tr className="border-b border-line text-[0.6875rem] uppercase tracking-[0.2em] text-muted">
           <th className="px-4 py-3 font-medium">Nome</th>
           <th className="px-4 py-3 font-medium">Ambiente</th>
           <th className="px-4 py-3 font-medium">Estilo</th>
@@ -54,8 +54,8 @@ const TableView = ({ items }: { items: Project[] }) => (
             <td className="px-4 py-2.5">
               <span className="tag">{categoryById[project.category].singular}</span>
             </td>
-            <td className="px-4 py-2.5 text-muted">{project.style}</td>
-            <td className="px-4 py-2.5 text-muted">{project.finish}</td>
+            <td className="px-4 py-2.5 font-light text-muted">{project.style}</td>
+            <td className="px-4 py-2.5 font-light text-muted">{project.finish}</td>
             <td className="px-2 py-2.5">
               <FavoriteButton project={project} className="size-9" />
             </td>
@@ -86,7 +86,7 @@ export const ProjectsPage = () => {
   return (
     <Page
       title={activeCategory ? activeCategory.label : "Projetos"}
-      emoji={activeCategory ? activeCategory.emoji : "🖼️"}
+      overline={activeCategory ? "Projetos · Ambiente" : "01 · Projetos"}
       documentTitle={activeCategory ? `Projetos · ${activeCategory.label}` : "Projetos"}
       description={
         activeCategory
@@ -107,7 +107,7 @@ export const ProjectsPage = () => {
               aria-pressed={category === item.id}
               onClick={() => setParam("c", category === item.id ? null : item.id)}
             >
-              <span aria-hidden="true">{item.emoji}</span> {item.label}
+              {item.label}
             </button>
           ))}
         </div>
@@ -121,10 +121,10 @@ export const ProjectsPage = () => {
               value={query}
               onChange={(event) => setParam("q", event.target.value || null)}
               placeholder="Buscar por nome, material, estilo…"
-              className="field !pl-10"
+              className="field !rounded-full !pl-11"
             />
           </label>
-          <div className="flex rounded-lg border border-line p-1" role="group" aria-label="Modo de visualização">
+          <div className="flex rounded-full border border-line p-1" role="group" aria-label="Modo de visualização">
             {(
               [
                 { id: "galeria", label: "Galeria", icon: "grid" },
@@ -137,8 +137,8 @@ export const ProjectsPage = () => {
                 aria-pressed={view === option.id}
                 onClick={() => setParam("v", option.id === "galeria" ? null : option.id)}
                 className={cn(
-                  "inline-flex min-h-9 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors",
-                  view === option.id ? "bg-hover text-fg" : "text-muted hover:text-fg",
+                  "inline-flex min-h-9 items-center gap-2 rounded-full px-4 text-[0.6875rem] font-medium uppercase tracking-[0.16em] transition-colors",
+                  view === option.id ? "bg-fg/10 text-fg" : "text-muted hover:text-fg",
                 )}
               >
                 <Icon name={option.icon} className="size-4" /> {option.label}
@@ -153,8 +153,8 @@ export const ProjectsPage = () => {
 
       <div className="mt-4">
         {items.length === 0 ? (
-          <div className="card p-10 text-center">
-            <p className="text-lg font-bold">Nenhum projeto encontrado</p>
+          <div className="border-y border-line p-14 text-center">
+            <p className="font-display text-3xl font-light">Nenhum projeto encontrado</p>
             <p className="mt-1 text-muted">Tente outro termo ou limpe os filtros.</p>
             <button type="button" className="btn mt-4" onClick={() => setParams({}, { replace: true })}>
               Limpar filtros
