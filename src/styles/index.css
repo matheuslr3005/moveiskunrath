@@ -1,0 +1,258 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/montserrat";
+
+/*
+ * Identidade derivada do logo (fundo grafite + amarelo + branco).
+ * Tudo passa por tokens: trocar a marca = trocar este bloco.
+ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #15171a;
+  --bg-elev: #1b1e22;
+  --bg-hover: #23272c;
+  --line: #2b2f35;
+  --fg: #f5f4f0;
+  --muted: #9aa0a8;
+  --accent: #f7cd48;
+  --accent-ink: #15171a;
+  --accent-text: #f7cd48;
+  --cover-wall: #20242a;
+  --cover-floor: #1a1d21;
+  --cover-soft: rgb(255 255 255 / 0.1);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fbfaf6;
+  --bg-elev: #ffffff;
+  --bg-hover: #f1efe7;
+  --line: #e4e1d6;
+  --fg: #1a1c20;
+  --muted: #6a6f77;
+  --accent: #f7cd48;
+  --accent-ink: #15171a;
+  --accent-text: #7d5f00;
+  --cover-wall: #ebe8dd;
+  --cover-floor: #dedacb;
+  --cover-soft: rgb(0 0 0 / 0.1);
+  --shadow: 0 1px 2px rgb(20 20 20 / 0.06), 0 12px 32px -14px rgb(20 20 20 / 0.25);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-hover: var(--bg-hover);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat Variable", "Inter Variable", ui-sans-serif, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    color: var(--fg);
+    transition:
+      background-color 150ms,
+      border-color 150ms,
+      transform 120ms;
+  }
+  .btn:hover {
+    background: var(--bg-hover);
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+  }
+  .btn-primary:hover {
+    background: color-mix(in srgb, var(--accent) 88%, white);
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2rem;
+    padding: 0 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    transition:
+      background-color 150ms,
+      color 150ms,
+      border-color 150ms,
+      transform 120ms;
+  }
+  .chip:hover {
+    color: var(--fg);
+    background: var(--bg-hover);
+  }
+  .chip:active {
+    transform: scale(0.96);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--bg-hover);
+    color: var(--fg);
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    border-radius: 0.875rem;
+    transition:
+      transform 200ms ease,
+      border-color 200ms,
+      box-shadow 200ms;
+  }
+  a.card:hover,
+  .card-hover:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+    box-shadow: var(--shadow);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 1rem;
+  }
+  .field::placeholder {
+    color: var(--muted);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+
+  /* Notion-like page cover: veio de madeira + corte amarelo, sem foto. */
+  .page-cover {
+    background:
+      linear-gradient(
+        112deg,
+        transparent 0 66%,
+        var(--accent) 66% 66.5%,
+        color-mix(in srgb, var(--accent) 10%, transparent) 66.5% 100%
+      ),
+      repeating-linear-gradient(100deg, rgb(255 255 255 / 0.035) 0 2px, transparent 2px 10px),
+      linear-gradient(135deg, #1d2025, #101215);
+  }
+
+  .prose-block {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--fg) 88%, var(--muted));
+  }
+}
+
+/* Revelação ao rolar — só quando o usuário não pediu menos movimento. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 600ms ease,
+      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .pop-in {
+    animation: pop-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.985);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
