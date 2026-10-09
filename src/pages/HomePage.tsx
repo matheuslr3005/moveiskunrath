@@ -4,7 +4,6 @@ import { HeroScene } from "../components/HeroScene";
 import { Icon } from "../components/Icon";
 import { Magnetic } from "../components/Magnetic";
 import { Reveal } from "../components/blocks";
-import { categories } from "../data/categories";
 import { company } from "../data/company";
 import { Configurator } from "../features/Configurator";
 import { ProjectRing } from "../features/ProjectRing";
@@ -57,36 +56,12 @@ const Hero = () => (
   </section>
 );
 
-const Marquee = () => {
-  const words = [...categories.map((category) => category.label), "Sob medida", "Projeto 3D"];
-  const row = (
-    <div className="flex shrink-0 items-center" aria-hidden="true">
-      {words.map((word, index) => (
-        <span key={word} className="flex items-center">
-          <span className={index % 2 ? "outline-text" : "text-fg"}>{word}</span>
-          <span className="mx-8 text-accent sm:mx-12">✦</span>
-        </span>
-      ))}
-    </div>
-  );
-
-  return (
-    <div className="marquee overflow-hidden border-y border-line py-6 font-display text-5xl font-semibold uppercase tracking-tight sm:py-8 sm:text-7xl" role="presentation">
-      <div className="marquee-track">
-        {row}
-        {row}
-      </div>
-    </div>
-  );
-};
-
 export const HomePage = () => {
   usePageTitle(null);
 
   return (
     <>
       <Hero />
-      <Marquee />
 
       <section id="montar" className="scroll-mt-20 pt-24 sm:pt-32">
         <Reveal className="mx-auto max-w-[90rem] px-5 pb-10 sm:px-10">

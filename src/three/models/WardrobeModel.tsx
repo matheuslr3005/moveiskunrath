@@ -1,5 +1,5 @@
 import { Carcass, Door, FloorGlow, Led, LedLight, Slab, type ModelProps } from "../parts";
-import { sharedMaterials } from "../materials";
+import { getMirrorMaterial, sharedMaterials } from "../materials";
 
 const CLOTHES = ["#3b4552", "#8a6f5a", "#d8d0c0", "#5d6b5a", "#2c2c30", "#a45f4a", "#c9b99a", "#46505f", "#6e5a7a"];
 
@@ -73,7 +73,7 @@ export const WardrobeModel = ({ finishMaterial, handle, led, widthCm, open }: Mo
               size={[moduleW - 0.004, 1.9 - 0.004]}
               position={[x, 1.05, DEPTH / 2 + 0.012]}
               hinge={hinge}
-              material={mirrored ? sharedMaterials.mirror : finishMaterial}
+              material={mirrored ? getMirrorMaterial() : finishMaterial}
               handle={handle}
               open={open}
               handleY={0}

@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Carcass, Door, Drawer, FloorGlow, Glow, Led, LedLight, Slab, type ModelProps } from "../parts";
-import { getTileTexture, LED_COLOR, sharedMaterials } from "../materials";
+import { getMirrorMaterial, getTileTexture, LED_COLOR, sharedMaterials } from "../materials";
 
 const WALL_Z = -0.23;
 
@@ -17,7 +17,7 @@ const MirrorHalo = ({ x, y, radius, on }: { x: number; y: number; radius: number
 
   return (
     <group position={[x, y, WALL_Z + 0.012]}>
-      <mesh material={sharedMaterials.mirror}>
+      <mesh material={getMirrorMaterial()}>
         <circleGeometry args={[radius, 64]} />
       </mesh>
       <mesh position={[0, 0, 0.004]}>

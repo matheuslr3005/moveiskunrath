@@ -85,7 +85,6 @@ export const sharedMaterials = {
   wall: new THREE.MeshStandardMaterial({ color: "#4a3e34", roughness: 0.95 }),
   glass: new THREE.MeshStandardMaterial({ color: "#050506", roughness: 0.08, metalness: 0.3 }),
   ceramic: new THREE.MeshStandardMaterial({ color: "#f2eee6", roughness: 0.15, side: THREE.DoubleSide }),
-  mirror: new THREE.MeshStandardMaterial({ color: "#bcc6cc", roughness: 0.1, metalness: 1, envMapIntensity: 2.4 }),
   floor: new THREE.MeshStandardMaterial({ color: "#2a231d", roughness: 0.38, metalness: 0.15 }),
 };
 
@@ -176,4 +175,58 @@ export const getScreenTexture = (): THREE.CanvasTexture => {
   texture.colorSpace = THREE.SRGBColorSpace;
   textureCache.set("screen", texture);
   return texture;
+};
+
+/** Reflexo de espelho desenhado em canvas: um espelho "de verdade" só reflete o ambiente, que aqui é escuro. */
+const getMirrorTexture = (): THREE.CanvasTexture => {
+  const cached = textureCache.get("mirror");
+  if (cached) return cached;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 512;
+  const context = canvas.getContext("2d");
+  if (context) {
+    const base = context.createLinearGradient(0, 0, 256, 512);
+    base.addColorStop(0, "#dfe5e8");
+    base.addColorStop(0.5, "#aeb9bf");
+    base.addColorStop(1, "#cfd7db");
+    context.fillStyle = base;
+    context.fillRect(0, 0, 256, 512);
+    // faixas de luz diagonais, como o reflexo de uma janela
+    for (const [x, width, alpha] of [
+      [20, 46, 0.42],
+      [96, 18, 0.3],
+      [150, 70, 0.22],
+    ] as const) {
+      const streak = context.createLinearGradient(x, 0, x + width, 0);
+      streak.addColorStop(0, "rgba(255,255,255,0)");
+      streak.addColorStop(0.5, `rgba(255,255,255,${alpha})`);
+      streak.addColorStop(1, "rgba(255,255,255,0)");
+      context.save();
+      context.translate(128, 256);
+      context.rotate(-0.38);
+      context.translate(-128, -256);
+      context.fillStyle = streak;
+      context.fillRect(x - 60, -200, width + 120, 900);
+      context.restore();
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  textureCache.set("mirror", texture);
+  return texture;
+};
+
+let mirrorMaterial: THREE.MeshStandardMaterial | null = null;
+
+export const getMirrorMaterial = (): THREE.MeshStandardMaterial => {
+  mirrorMaterial ??= new THREE.MeshStandardMaterial({
+    map: getMirrorTexture(),
+    color: "#ffffff",
+    roughness: 0.14,
+    metalness: 0.25,
+    envMapIntensity: 1.1,
+  });
+  return mirrorMaterial;
 };

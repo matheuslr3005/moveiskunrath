@@ -444,24 +444,6 @@
   background: #15120f;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 38s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-.outline-text {
-  -webkit-text-stroke: 1.5px rgb(239 231 218 / 0.55);
-  color: transparent;
-}
-
 @keyframes hint-pulse {
   50% {
     box-shadow: 0 0 0 10px rgb(247 205 72 / 0);
