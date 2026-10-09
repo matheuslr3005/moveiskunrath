@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { CategoryId } from "../data/categories";
 import { categoryById } from "../data/categories";
 import type { Project } from "../data/projects";
+import { assetUrl } from "../lib/assets";
 
 type Tone = Project["tone"];
 
@@ -146,7 +147,7 @@ export const ProjectCover = ({ project, imageIndex = 0, className }: ProjectCove
   const photo = project.images[imageIndex];
   if (photo) {
     return (
-      <img src={photo} alt={project.title} loading="lazy" className={`size-full object-cover ${className ?? ""}`} />
+      <img src={assetUrl(photo)} alt={project.title} loading="lazy" className={`size-full object-cover ${className ?? ""}`} />
     );
   }
 

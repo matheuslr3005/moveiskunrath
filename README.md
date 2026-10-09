@@ -16,8 +16,14 @@ pnpm dev        # desenvolvimento
 pnpm build      # typecheck + build em dist/
 ```
 
-Hospedagem estática (Vercel, Netlify, Cloudflare Pages): `vercel.json` e `public/_redirects`
-já fazem o fallback de SPA para `/index.html`.
+## Deploy
+
+- **GitHub Pages:** `.github/workflows/deploy.yml` publica a cada push na `main`. Em *Settings →
+  Pages → Source* escolha **GitHub Actions**. O site sai em `https://<usuário>.github.io/moveiskunrath/`.
+  Com domínio próprio, crie a variável de repositório `BASE_PATH` com o valor `/`.
+- **Vercel / Netlify / Cloudflare Pages:** importe o repositório (build `pnpm build`, saída `dist`).
+  `vercel.json` e `public/_redirects` já fazem o fallback de SPA para `/index.html`.
+- Para testar um subcaminho localmente: `BASE_PATH=/moveiskunrath/ pnpm build && BASE_PATH=/moveiskunrath/ pnpm preview`.
 
 ## O que o site faz
 

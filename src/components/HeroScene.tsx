@@ -1,4 +1,5 @@
 import { heroImage } from "../data/company";
+import { assetUrl } from "../lib/assets";
 
 /**
  * Capa da home. Com foto real (company.heroImage) usa a foto; sem ela, desenha uma
@@ -6,7 +7,7 @@ import { heroImage } from "../data/company";
  */
 export const HeroScene = () => {
   if (heroImage) {
-    return <img src={heroImage} alt="" className="size-full object-cover" fetchPriority="high" />;
+    return <img src={assetUrl(heroImage)} alt="" className="size-full object-cover" fetchPriority="high" />;
   }
 
   return (
