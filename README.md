@@ -18,9 +18,12 @@ pnpm build      # typecheck + build em dist/
 
 ## Deploy
 
-- **GitHub Pages:** `.github/workflows/deploy.yml` publica a cada push na `main`. Em *Settings →
-  Pages → Source* escolha **GitHub Actions**. O site sai em `https://<usuário>.github.io/moveiskunrath/`.
-  Com domínio próprio, crie a variável de repositório `BASE_PATH` com o valor `/`.
+- **GitHub Pages (sem usar a `main`):** o workflow `.github/workflows/deploy.yml` roda a cada push
+  na branch **`deploy`**, constrói o site e envia o resultado para a branch `gh-pages`.
+  Configuração única em *Settings → Pages → Source*: **Deploy from a branch → `gh-pages` / `(root)`**.
+  Para publicar: `git push origin <sua-branch>:deploy`. O site sai em
+  `https://<usuário>.github.io/moveiskunrath/`. Com domínio próprio, crie a variável de
+  repositório `BASE_PATH` com o valor `/`.
 - **Vercel / Netlify / Cloudflare Pages:** importe o repositório (build `pnpm build`, saída `dist`).
   `vercel.json` e `public/_redirects` já fazem o fallback de SPA para `/index.html`.
 - Para testar um subcaminho localmente: `BASE_PATH=/moveiskunrath/ pnpm build && BASE_PATH=/moveiskunrath/ pnpm preview`.
