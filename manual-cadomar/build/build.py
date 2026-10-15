@@ -123,11 +123,21 @@ STRIPE_FIXES = [
      '<div style="position:absolute; top:-10%; bottom:-10%; right:22%; width:16%; ' + SK),
 ]
 
+COVER_GRID = ('<div style="position:relative; height:100%; background:#14161A; display:grid; '
+              'grid-template-columns:minmax(0,1fr) minmax(0,1fr); overflow:hidden;">')
+# tira por cima da emenda das duas colunas: a borda fracionária da coluna da foto vazava 1px azul
+COVER_SEAM = '<div style="position:absolute; top:0; bottom:0; left:calc(50% - 2px); width:4px; background:#14161A; z-index:5;"></div>'
+
+P3_NEXT = '<div style="position:absolute; left:56px; bottom:48px; display:flex; flex-direction:column; gap:6px;">'
+# página 3: a máscara da foto vaza 1px azul no limite de 60% quando o PDF rasteriza.
+# Tira branca logo depois da foto, na ordem de pintura: fica abaixo do texto que vem depois.
+P3_SEAM = '<div style="position:absolute; left:calc(60% - 2px); top:0; bottom:0; width:8px; background:#FFFFFF;"></div>\n    '
+
 IMG_CAMISETA = re.compile(r'<div style="min-height:0; position:relative; background:#FFFFFF; border-radius:4px; overflow:hidden;">'
                           r'<img src="assets/camiseta-com-logo.png"[^>]*></div>')
 IMG_BONE = re.compile(r'<div style="min-height:0; position:relative; background:#D9D8D6; border-radius:4px; overflow:hidden;">'
                       r'<img src="assets/bone-com-logo.png"[^>]*></div>')
-NEW_CAMISETA = ('<div style="min-height:0; position:relative; background:#070E11; border-radius:4px; overflow:hidden;">'
+NEW_CAMISETA = ('<div style="min-height:0; position:relative; background:#0E161A; border-radius:4px; overflow:hidden;">'
                 '<img src="assets/camiseta-logo-b.png" alt="Camiseta branca com o logo Cadomar B, frente e costas" '
                 'style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block;"></div>')
 NEW_BONE = ('<div style="min-height:0; position:relative; background:#D9D8D6; border-radius:4px; overflow:hidden;">'
@@ -142,8 +152,12 @@ HEAD = """<!DOCTYPE html>
 <title>Manual de Marca Cadomar</title>
 <link rel="icon" href="logo-B/cadomar-B-simbolo-vermelho.svg">
 <style>
-  @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:block;src:url(fonts/archivo-latin-wght-normal.woff2) format('woff2')}
-  @font-face{font-family:'Archivo';font-style:italic;font-weight:100 900;font-display:block;src:url(fonts/archivo-latin-wght-italic.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:block;src:url(fonts/archivo-400-normal.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:block;src:url(fonts/archivo-700-normal.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-display:block;src:url(fonts/archivo-800-normal.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:900;font-display:block;src:url(fonts/archivo-900-normal.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:italic;font-weight:800;font-display:block;src:url(fonts/archivo-800-italic.woff2) format('woff2')}
+  @font-face{font-family:'Archivo';font-style:italic;font-weight:900;font-display:block;src:url(fonts/archivo-900-italic.woff2) format('woff2')}
   @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:block;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2')}
   @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:600;font-display:block;src:url(fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2')}
   doc-page:not(:defined){visibility:hidden}
@@ -180,6 +194,10 @@ def build(mode, lucide, out):
     for old, new in COPY_FIXES:
         assert old in body, f"trecho não encontrado: {old[:50]}"
         body = body.replace(old, new)
+    assert body.count(P3_NEXT) == 1
+    body = body.replace(P3_NEXT, P3_SEAM + P3_NEXT)
+    assert body.count(COVER_GRID) == 1
+    body = body.replace(COVER_GRID, COVER_GRID + COVER_SEAM)
     for old, new in STRIPE_FIXES:
         assert body.count(old) == 1, f"faixa não encontrada: {old[:70]}"
         body = body.replace(old, new)

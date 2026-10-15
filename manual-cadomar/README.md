@@ -19,7 +19,8 @@
 - Página 19 (uniformes), fotos novas com o Logo B:
   - camiseta branca, frente e costas, a partir das fotos enviadas;
   - boné retocado a partir da foto enviada (azul → grafite, costura amarela → vermelha, logo antigo trocado pelo Logo B negativo).
-- A Archivo carrega só com eixo de peso. O logo aprovado tem a palavra em largura normal; o `'wdth' 110/118` do original não tinha efeito.
+- A Archivo usa instâncias estáticas por peso (400, 700, 800, 900 e itálicos 800, 900), sem eixo de largura: o logo aprovado tem a palavra em largura normal e o `'wdth' 110/118` do original não tinha efeito. Instâncias estáticas também fazem o PDF embutir TrueType em vez de Type 3.
+- PDF: emendas de 1 px na capa e na página 3 (borda fracionária de colunas e máscara) cobertas, e fundo das fotos de camiseta fundido ao painel.
 
 ## Pontos em aberto (do README original, mais o que surgiu)
 
@@ -33,6 +34,7 @@
 
 ```
 python3 build/build.py --lucide <pasta com lucide-static@0.436.0/icons>   # gera index.html
+python3 build/make_fonts.py <archivo wght normal.woff2> <archivo wght italic.woff2> fonts/   # fonttools + brotli
 python3 build/compose_shirts.py frente.webp costas.webp assets/camiseta-logo-b.png
 python3 build/retouch_cap.py bone.webp assets/bone-logo-b.jpg              # numpy + opencv-python-headless
 node build/render3d.mjs <url do index em modo --3d keep> assets/            # three@0.165 local, playwright-core

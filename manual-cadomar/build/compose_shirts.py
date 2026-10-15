@@ -11,7 +11,7 @@ from PIL import Image, ImageChops, ImageFilter
 
 HERE = Path(__file__).resolve().parent
 LOGO = HERE.parent / "logo-B" / "cadomar-B-cor.png"
-BG = (7, 14, 17)
+BG = (14, 22, 26)  # média das bordas das duas fotos; o painel no manual usa #0E161A
 GAP = 0
 
 
@@ -50,14 +50,15 @@ def main(front_p, back_p, out_p):
 
     w, h = front.size
     canvas = Image.new("RGB", (w * 2 + GAP, h), BG)
-    # esmaece as bordas para não aparecer emenda entre as duas fotos
+    # esmaece as bordas para não aparecer emenda nem retângulo: laterais curtas,
+    # topo curto e base longa (as camisetas são cortadas pelo quadro da foto)
     feather = Image.new("L", (w, h), 255)
     px = feather.load()
-    for x in range(48):
-        v = round(255 * x / 48)
-        for y in range(h):
-            px[x, y] = min(px[x, y], v)
-            px[w - 1 - x, y] = min(px[w - 1 - x, y], v)
+    side, top, bottom = 48, 40, 130
+    for y in range(h):
+        for x in range(w):
+            f = min(x / side, (w - 1 - x) / side, y / top, (h - 1 - y) / bottom, 1.0)
+            px[x, y] = round(255 * max(f, 0))
     canvas.paste(front, (0, 0), feather)
     canvas.paste(back, (w + GAP, 0), feather)
     canvas.save(out_p, optimize=True)
