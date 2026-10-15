@@ -128,10 +128,19 @@ COVER_GRID = ('<div style="position:relative; height:100%; background:#14161A; d
 # tira por cima da emenda das duas colunas: a borda fracionária da coluna da foto vazava 1px azul
 COVER_SEAM = '<div style="position:absolute; top:0; bottom:0; left:calc(50% - 2px); width:4px; background:#14161A; z-index:5;"></div>'
 
-P3_NEXT = '<div style="position:absolute; left:56px; bottom:48px; display:flex; flex-direction:column; gap:6px;">'
-# página 3: a máscara da foto vaza 1px azul no limite de 60% quando o PDF rasteriza.
-# Tira branca logo depois da foto, na ordem de pintura: fica abaixo do texto que vem depois.
-P3_SEAM = '<div style="position:absolute; left:calc(60% - 2px); top:0; bottom:0; width:8px; background:#FFFFFF;"></div>\n    '
+# página 3: foto achatada numa única imagem (sem máscara nem blend, que quebram em vários leitores de PDF)
+# e confinada à metade esquerda, esmaecendo para o branco antes da coluna de texto.
+P3_BLOCK = re.compile(r'<div style="position:absolute; left:0; top:0; bottom:0; width:60%; background:linear-gradient\(180deg,#182F42 0%,#3C6C93 55%,#7FA2BE 100%\); '
+                      r'-webkit-mask-image[^"]*">\s*<img src="assets/frota-patio.jpeg"[^>]*>\s*<div [^>]*></div>\s*</div>')
+P3_LIVE = ('<div data-bake="p3" style="position:absolute; left:0; top:0; bottom:0; width:50%; overflow:hidden; '
+           'background:linear-gradient(180deg,#182F42 0%,#3C6C93 55%,#7FA2BE 100%);">'
+           '<img src="assets/frota-patio.jpeg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; '
+           'object-position:30% 50%; mix-blend-mode:luminosity; opacity:.9; display:block;">'
+           '<div style="position:absolute; inset:0; background:linear-gradient(180deg,rgba(24,47,66,0) 45%,rgba(24,47,66,.85) 100%);"></div>'
+           '<div style="position:absolute; inset:0; background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 42%,rgba(255,255,255,.55) 72%,#FFFFFF 100%);"></div>'
+           '</div>')
+P3_FLAT = ('<img src="assets/bake-p3.jpg" alt="Frota Cadomar no pátio de Canoas" '
+           'style="position:absolute; left:0; top:0; bottom:0; width:50%; height:100%; object-fit:cover; display:block;">')
 
 IMG_CAMISETA = re.compile(r'<div style="min-height:0; position:relative; background:#FFFFFF; border-radius:4px; overflow:hidden;">'
                           r'<img src="assets/camiseta-com-logo.png"[^>]*></div>')
@@ -180,7 +189,7 @@ TAIL = """
 """
 
 
-def build(mode, lucide, out):
+def build(mode, lucide, out, bake_prep=False):
     src = SRC.read_text()
     body = src[src.index('<doc-page'):src.index("</doc-page>")]
     body = body[body.index(">") + 1:]
@@ -194,8 +203,8 @@ def build(mode, lucide, out):
     for old, new in COPY_FIXES:
         assert old in body, f"trecho não encontrado: {old[:50]}"
         body = body.replace(old, new)
-    assert body.count(P3_NEXT) == 1
-    body = body.replace(P3_NEXT, P3_SEAM + P3_NEXT)
+    assert len(P3_BLOCK.findall(body)) == 1, "bloco da foto da página 3 não encontrado"
+    body = P3_BLOCK.sub(P3_LIVE if bake_prep else P3_FLAT, body)
     assert body.count(COVER_GRID) == 1
     body = body.replace(COVER_GRID, COVER_GRID + COVER_SEAM)
     for old, new in STRIPE_FIXES:
@@ -229,5 +238,6 @@ if __name__ == "__main__":
     ap.add_argument("--3d", dest="mode", default="img", choices=["keep", "img"])
     ap.add_argument("--lucide", required=True)
     ap.add_argument("--out", default=str(ROOT / "index.html"))
+    ap.add_argument("--bake-prep", action="store_true", help="mantém a foto da pág. 3 em HTML para gerar assets/bake-p3.jpg")
     a = ap.parse_args()
-    build(a.mode, a.lucide, a.out)
+    build(a.mode, a.lucide, a.out, a.bake_prep)
